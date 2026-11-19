@@ -1,0 +1,759 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="locked">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>France's Unsolved Mysteries — Group N° 9</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070a12;--ink:#E8ECF4;--ink2:#AAB4C6;--mute:#6B7690;--line:#1F2838;--co:#8CB8FF;--ye:#FFE278;--ez:cubic-bezier(.4,0,.2,1);--serif:'Playfair Display',Georgia,serif;--sans:Inter,system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+html.locked,html.locked body{overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+em{font-style:italic;color:var(--co)}
+.lab{font:500 12px/1.3 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.hand,.hand *{cursor:pointer!important}
+
+#glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 620px at 68% 55%,rgba(40,90,190,.2),transparent 70%),radial-gradient(700px 500px at 8% 0,rgba(70,50,150,.14),transparent 70%)}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+#globe-wrap{position:fixed;inset:0;z-index:1;transform-origin:50% 50%;will-change:transform}
+#track{height:360vh;pointer-events:none;position:relative;z-index:2}
+
+/* intro */
+#intro{position:fixed;inset:0;z-index:3;pointer-events:none;will-change:opacity,transform}
+#jump{position:absolute;top:28px;left:5vw;display:flex;gap:8px;align-items:center;flex-wrap:wrap;pointer-events:auto}
+#jump .lab{margin-right:6px}
+#jump button{font:500 12px var(--sans);color:var(--ink2);background:rgba(7,10,18,.6);border:1px solid var(--line);padding:8px 12px;transition:.15s}
+#jump button:hover{border-color:var(--co);color:var(--ink)}
+body.faded #jump{pointer-events:none}
+.kick{position:absolute;left:5vw;top:max(14vh,110px);max-width:36ch;color:var(--ink2);opacity:0;transition:opacity 1s 1.4s}
+.kick .lab{display:block;margin-bottom:12px}
+.ti{position:absolute;left:5vw;bottom:13vh;font:400 clamp(44px,8vw,140px)/.96 var(--serif);letter-spacing:-.05em}
+.ln{display:block;overflow:hidden;padding-bottom:.1em}
+.ln>span{display:inline-block;transform:translateY(108%);transition:transform 1.1s var(--ez)}
+.ready .ln>span{transform:none}
+.ready .ln:nth-child(1)>span{transition-delay:.55s}
+.ready .ln:nth-child(2)>span{transition-delay:.7s}
+.ready .ln:nth-child(3)>span{transition-delay:.85s}
+.ready .kick,.ready .cue{opacity:1}
+.cue{position:absolute;right:5vw;bottom:5vh;opacity:0;transition:opacity 1s 1.6s}
+
+/* world / france UI */
+#b-enter{position:fixed;left:50%;bottom:7vh;transform:translateX(-50%);z-index:5;padding:14px 26px;border:1px solid var(--co);color:var(--ink);font:500 13px var(--sans);letter-spacing:.08em;text-transform:uppercase;background:rgba(7,10,18,.7);opacity:0;pointer-events:none;transition:opacity .6s,background .15s}
+#b-enter:hover{background:rgba(140,184,255,.15)}
+.st-world #b-enter{opacity:1;pointer-events:auto}
+#idx{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:5;width:220px;opacity:0;pointer-events:none;transition:opacity .6s}
+.st-france #idx{opacity:1;pointer-events:auto;transition-delay:.3s}
+#idx .lab{display:block;margin-bottom:10px}
+#idx .row{display:grid;grid-template-columns:34px 1fr auto;align-items:baseline;width:100%;text-align:left;padding:12px 10px;border-top:1px solid var(--line);transition:.15s;background:rgba(7,10,18,.65)}
+#idx .row:last-child{border-bottom:1px solid var(--line)}
+#idx .row b{font:500 11px var(--sans);color:var(--cc);letter-spacing:.1em}
+#idx .row span{font:400 18px var(--serif)}
+#idx .row em{font:400 12px var(--sans);color:var(--mute);font-style:normal}
+#idx .row.on,#idx .row:hover{background:color-mix(in srgb,var(--cc) 15%,transparent);border-top-color:var(--cc)}
+#hud{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:5;display:flex;gap:8px;opacity:0;pointer-events:none;transition:opacity .6s}
+.st-france #hud{opacity:1;pointer-events:auto;transition-delay:.3s}
+#hud button{font:500 12px var(--sans);letter-spacing:.06em;padding:10px 16px;border:1px solid var(--line);background:rgba(7,10,18,.8);transition:.15s}
+#hud button:hover{border-color:var(--co)}
+#hud kbd{font:inherit;color:var(--mute);margin-left:6px}
+#ro{position:fixed;left:24px;bottom:24px;z-index:5;display:grid;gap:4px;transition:opacity .4s}
+#ro b{font:italic 400 15px var(--serif);color:var(--ink2)}
+.st-france #ro,.st-dossier #ro,.st-summary #ro{opacity:0}
+#timer{position:fixed;top:24px;right:24px;z-index:60;font:500 13px var(--sans);letter-spacing:.1em;padding:6px 10px;border:1px solid var(--line);background:rgba(7,10,18,.85);display:none}
+#timer.show{display:block}
+#timer.warn{color:#ff8a7a;border-color:#ff8a7a}
+
+/* pins */
+.pin{width:30px;height:30px;display:grid;place-items:center;pointer-events:auto;cursor:pointer;transition:opacity .4s}
+.pin i{width:10px;height:10px;border-radius:50%;background:currentColor;animation:pl 2s infinite}
+.pin b{position:absolute;left:26px;top:50%;transform:translateY(-50%);white-space:nowrap;font:500 11px var(--sans);letter-spacing:.08em;color:var(--ink);background:rgba(7,10,18,.9);padding:3px 7px;border:1px solid var(--line)}
+@keyframes pl{0%{box-shadow:0 0 0 0 currentColor}70%,100%{box-shadow:0 0 0 14px transparent}}
+.st-dossier .pin,.st-summary .pin{opacity:0;pointer-events:none}
+
+/* regions overlay */
+#states{position:fixed;inset:0;z-index:40;background:rgba(5,8,14,.96);display:grid;grid-template-columns:minmax(260px,27vw) 1fr minmax(210px,21vw);gap:3vw;align-items:center;padding:6vh 5vw;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .6s var(--ez),visibility 0s .6s}
+#states.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .6s var(--ez)}
+.stt h2{font:400 clamp(36px,5vw,84px)/1 var(--serif);letter-spacing:-.04em;margin:14px 0 18px}
+.sd{color:var(--ink2);max-width:34ch}
+.go{margin-top:28px;display:inline-flex;gap:12px;align-items:center;padding:14px 22px;border:1px solid var(--co);font:500 13px var(--sans);letter-spacing:.08em;text-transform:uppercase;background:rgba(140,184,255,.08);transition:.15s}
+.go:hover{background:rgba(140,184,255,.22)}
+.sback{position:absolute;top:24px;left:5vw;font:500 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);transition:.15s}
+.sback:hover{color:var(--ink)}
+.smap svg{width:100%;max-height:82vh;height:auto;display:block}
+.smap path{fill:#0e1626;stroke:#4a5d82;stroke-width:.7;stroke-linejoin:round;transition:fill .2s,stroke .2s}
+.smap path.hl{fill:color-mix(in srgb,var(--co) 40%,#0e1626);stroke:var(--co)}
+.slist{list-style:none}
+.slist li{display:grid;grid-template-columns:34px 1fr;align-items:baseline;padding:9px 0;border-top:1px solid var(--line);font:400 18px var(--serif);color:var(--ink2);transition:color .15s}
+.slist li:last-child{border-bottom:1px solid var(--line)}
+.slist li b{font:500 11px var(--sans);letter-spacing:.1em;color:var(--mute)}
+.slist li.hl{color:var(--ink)}
+#states.open .stt>*{animation:fup .9s var(--ez) backwards}
+#states.open .stt>:nth-child(1){animation-delay:.1s}
+#states.open .stt>:nth-child(2){animation-delay:.2s}
+#states.open .stt>:nth-child(3){animation-delay:.3s}
+#states.open .stt>:nth-child(4){animation-delay:.4s}
+#states.open .smap path{animation:pop .9s var(--ez) backwards}
+#states.open .slist li{animation:fup .7s var(--ez) backwards}
+@keyframes fup{from{opacity:0;transform:translateY(16px)}}
+@keyframes pop{0%{opacity:0;fill:var(--co)}35%{opacity:1;fill:color-mix(in srgb,var(--co) 55%,#0e1626)}100%{opacity:1}}
+
+/* flag */
+#flag{position:fixed;z-index:30;pointer-events:none;opacity:0}
+#flag.on{opacity:1;transition:opacity .3s}
+#flag svg{display:block;clip-path:inset(0 100% 0 0)}
+#flag.on svg{animation:wipe 1.1s var(--ez) forwards}
+#flag.out{opacity:0;transform:scale(2.7);transition:opacity 1.1s var(--ez) .8s,transform 1.9s cubic-bezier(.65,0,.35,1)}
+@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
+#flagcap{position:fixed;left:0;right:0;bottom:11vh;z-index:31;text-align:center;pointer-events:none;opacity:0;transition:opacity .6s}
+#flagcap.on{opacity:1}
+#flagcap h3{font:italic 400 clamp(32px,4vw,64px)/1 var(--serif);letter-spacing:-.03em;margin-bottom:8px}
+
+/* dossier + summary */
+#dossier,#summary{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;overflow-x:hidden;display:none;overscroll-behavior:contain}
+#dossier.open,#summary.open{display:block}
+.d-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:12px 5vw;background:rgba(7,10,18,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.d-back{display:flex;align-items:center;gap:10px;font-size:13px}
+.d-back b{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font-weight:400;transition:.15s}
+.d-back:hover b{border-color:var(--co);color:var(--co)}
+.d-t{font:italic 400 18px var(--serif)}
+.d-nav{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.1em;color:var(--mute)}
+.d-nav button{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;transition:.15s}
+.d-nav button:hover:not(:disabled){border-color:var(--co);color:var(--co)}
+.d-nav button:disabled{opacity:.25;cursor:default}
+.d-prog{position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--co);transform:scaleX(0);transform-origin:0 50%}
+.d-hero{position:relative;min-height:calc(100vh - 55px);padding:8vh 5vw 6vh;display:grid;grid-template-columns:1fr minmax(220px,30vw);grid-template-rows:1fr auto;gap:0 5vw;overflow:hidden;border-bottom:1px solid var(--line)}
+.d-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(60% 70% at 85% 30%,color-mix(in srgb,var(--co) 22%,transparent),transparent 70%);pointer-events:none}
+.d-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1);opacity:.14;pointer-events:none}
+.d-num{position:absolute;right:3vw;top:-2vw;font:400 clamp(200px,34vw,560px)/1 var(--serif);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--co) 38%,transparent);pointer-events:none;user-select:none}
+.d-hero-in{position:relative;grid-column:1;align-self:end}
+.d-hero h1{font:400 clamp(56px,10vw,170px)/.95 var(--serif);letter-spacing:-.05em;margin:14px 0 18px}
+.lede{font-size:clamp(17px,1.6vw,22px);color:var(--ink2);max-width:40ch}
+.d-loc{position:relative;grid-column:2;grid-row:1;align-self:center}
+.d-loc svg{width:100%;height:auto;display:block}
+.d-loc path{fill:#0e1626;stroke:#34425f;stroke-width:.6}
+.d-loc path.on{fill:color-mix(in srgb,var(--co) 32%,transparent);stroke:var(--co);stroke-width:1.2}
+.d-loc .rt{fill:none;stroke:var(--co);stroke-width:1.4;stroke-dasharray:4 4}
+.d-loc .pn{fill:var(--co)}
+.d-stats{position:relative;grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:1px solid var(--line);margin-top:6vh}
+.d-stats div{padding-top:16px}
+.d-stats b{display:block;font:400 clamp(20px,2.2vw,30px)/1.2 var(--serif);margin-top:8px}
+.d-sec{padding:12vh 5vw;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(120px,22%) 1fr;gap:4vw}
+.d-sec ul,.d-sec ol{list-style:none;max-width:68ch}
+.facts li{padding:18px 0;border-top:1px solid var(--line);font-size:18px;color:var(--ink2)}
+.tl li{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:16px 0;border-top:1px solid var(--line);color:var(--ink2)}
+.tl li span{font:500 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--co);padding-top:4px}
+.ob h2{font:400 clamp(32px,5vw,80px)/1.05 var(--serif);letter-spacing:-.04em;margin-bottom:24px}
+.ob p{color:var(--ink2);max-width:60ch}
+.ob .lab{margin:32px 0 8px}
+.th li{padding:10px 0;border-top:1px solid var(--line);color:var(--ink2)}
+.vf{display:inline-block;margin-top:24px;padding:8px 12px;border:1px dashed var(--ye);color:var(--ye);font:500 12px var(--sans);letter-spacing:.04em}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.gal figcaption{margin-top:10px;font-size:14px;color:var(--ink2)}
+.gal figcaption em{display:block;font-size:12px;color:var(--mute);font-style:normal;margin-top:2px}
+.fig{position:relative;aspect-ratio:4/3;background:#0b111c;border:1px solid var(--line);overflow:hidden}
+.fig img{width:100%;height:100%;object-fit:cover;display:block}
+.fig.missing img{display:none}
+.fig.missing::after{content:'Document to insert';position:absolute;inset:0;display:grid;place-items:center;font:500 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+body.noph .fig.missing{display:none}
+.src{padding:6vh 5vw 3vh;color:var(--mute);font-size:13px}
+.nx{display:flex;align-items:center;justify-content:space-between;width:100%;padding:6vh 5vw;border-top:1px solid var(--line);text-align:left;transition:background .2s}
+.nx:hover{background:color-mix(in srgb,var(--co) 8%,transparent)}
+.nx b{font:400 clamp(36px,6vw,96px)/1 var(--serif);letter-spacing:-.04em}
+.nx i{font-style:normal;font-size:40px;color:var(--co)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ez),transform .8s var(--ez)}
+.rv.in{opacity:1;transform:none}
+.s-hero{min-height:60vh;display:flex;flex-direction:column;justify-content:flex-end;padding:10vh 5vw 6vh;border-bottom:1px solid var(--line)}
+.s-hero h1{font:400 clamp(48px,9vw,150px)/.98 var(--serif);letter-spacing:-.05em;margin-top:14px}
+.mx{width:100%;border-collapse:collapse;grid-column:1/-1}
+.mx th{text-align:left;font:500 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);padding:12px 12px 12px 0;border-bottom:1px solid var(--line)}
+.mx td{padding:18px 12px 18px 0;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+.mx td:first-child{font:400 24px var(--serif);color:var(--ink)}
+.mx td:first-child small{font:500 11px var(--sans);letter-spacing:.1em;margin-right:10px}
+.st{display:inline-block;padding:4px 10px;border:1px solid currentColor;font:500 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.two p.big{font:400 clamp(20px,2.2vw,30px)/1.35 var(--serif);color:var(--ink)}
+.two>div{grid-column:auto}
+.cred{padding:10vh 5vw;display:grid;gap:14px}
+.cred ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px 32px;font:400 22px var(--serif)}
+
+/* loader */
+#loader{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;justify-content:flex-end;padding:5vw}
+#loader.out{transform:translateY(-100%);transition:transform 1s var(--ez)}
+.l-num{font:400 clamp(90px,20vw,300px)/.85 var(--serif);letter-spacing:-.06em}
+.l-label{margin:18px 0 14px}
+.l-bar{height:1px;background:var(--line)}
+.l-bar i{display:block;height:1px;background:var(--co);transform:scaleX(0);transform-origin:0 50%}
+
+/* gate (blurred start screen) */
+#gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#070a12;cursor:pointer;overflow:hidden;transition:opacity .9s var(--ez) .25s,visibility 0s 1.2s}
+#gate .blob{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform;animation:drift 14s ease-in-out infinite alternate}
+.b1{width:46vmax;height:46vmax;left:-10vmax;top:-14vmax;background:#3a6dff;opacity:.5}
+.b2{width:38vmax;height:38vmax;right:-8vmax;bottom:-14vmax;background:#3fd0c9;opacity:.22;animation-delay:-5s!important}
+.b3{width:30vmax;height:30vmax;left:38%;top:34%;background:#14307a;opacity:.65;animation-delay:-9s!important}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(6vmax,4vmax,0) scale(1.15)}}
+.ghost{position:absolute;font:italic 400 clamp(90px,26vw,420px)/.9 var(--serif);color:rgba(255,255,255,.13);filter:blur(22px);letter-spacing:-.05em;transition:filter .8s var(--ez),opacity .8s var(--ez);pointer-events:none}
+.g-in{position:relative;text-align:center;display:grid;gap:18px;justify-items:center;padding:0 6vw;transition:opacity .5s,transform .8s var(--ez)}
+.g-in .lab{color:var(--ink2)}
+.g-in h2{font:400 clamp(34px,5.4vw,84px)/1 var(--serif);letter-spacing:-.05em}
+.g-click{display:flex;align-items:center;gap:12px;font:500 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);margin-top:18px}
+.g-click span{width:10px;height:10px;border-radius:50%;background:var(--co);color:var(--co);animation:pl 2s infinite}
+.g-foot{position:absolute;bottom:24px;left:0;right:0;text-align:center}
+#gate.go{opacity:0;visibility:hidden;pointer-events:none}
+#gate.go .ghost{filter:blur(0);opacity:0}
+#gate.go .g-in{opacity:0;transform:translateY(-18px)}
+
+@media(max-width:800px){.d-hero{grid-template-columns:1fr}.d-loc{grid-column:1;grid-row:auto;max-width:240px}.d-sec{grid-template-columns:1fr;gap:20px}.gal{grid-template-columns:1fr}.tl li{grid-template-columns:1fr;gap:4px}#idx{width:170px}#states{grid-template-columns:1fr;overflow:auto;align-items:start}.slist{display:none}}
+</style>
+</head>
+<body>
+<div id="glow"></div>
+<canvas id="bg"></canvas>
+<div id="globe-wrap"></div>
+<div id="track"></div>
+
+<section id="intro">
+  <nav id="jump"><span class="lab">Jump to a case</span>
+    <button data-a="jump" data-i="0">01 Chevaline</button><button data-a="jump" data-i="1">02 Godard</button><button data-a="jump" data-i="2">03 Ben Barka</button><button data-a="jump" data-i="3">04 A6</button>
+  </nav>
+  <div class="kick"><span class="lab">Photo Magazine N°01</span>Four unresolved French cases, and the obstacle that keeps each one closed.</div>
+  <h1 class="ti"><span class="ln"><span>France's</span></span><span class="ln"><span><em>unsolved</em></span></span><span class="ln"><span>mysteries.</span></span></h1>
+  <div class="cue lab">Scroll ↓</div>
+</section>
+
+<button id="b-enter" data-a="enter">Click the Earth to continue</button>
+<aside id="idx"></aside>
+<div id="hud"><button data-a="fs">Fullscreen<kbd>F</kbd></button><button data-a="restart">↺ Restart</button><button data-a="summary">Summary ↓</button></div>
+<div id="ro"><span class="lab">Group N° 9</span><b></b></div>
+<div id="timer">00:00</div>
+
+<section id="states" aria-hidden="true">
+  <button class="sback" data-a="sback">← Back to Earth</button>
+  <div class="stt">
+    <p class="lab">The territory</p>
+    <h2>Thirteen regions.<br><em>One country.</em></h2>
+    <p class="sd">Mainland France is divided into 13 regions. Four of them hold the files we are about to open.</p>
+    <button class="go" data-a="zoom">Zoom into France <i>→</i></button>
+  </div>
+  <div class="smap"></div>
+  <ol class="slist"></ol>
+</section>
+
+<div id="flag"></div>
+<div id="flagcap"><h3>France</h3><p class="lab">Bleu · Blanc · Rouge</p></div>
+
+<div id="dossier"></div>
+<div id="summary"></div>
+
+<div id="loader">
+  <div class="l-num">000</div>
+  <p class="l-label lab">Loading the archive…</p>
+  <div class="l-bar"><i></i></div>
+</div>
+
+<div id="gate" role="button" tabindex="0" aria-label="Click to begin">
+  <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+  <div class="ghost">France</div>
+  <div class="g-in">
+    <p class="lab">PBL · Language &amp; Culture · Group N° 9</p>
+    <h2>France's <em>unsolved</em> mysteries</h2>
+    <p class="g-click"><span></span>Click anywhere to begin</p>
+  </div>
+  <p class="g-foot lab">SRM IST · 26LCA1003J · Slot A1</p>
+</div>
+
+<script src="https://unpkg.com/globe.gl"></script>
+<script>
+(()=>{
+'use strict';
+/* ---------- SETTINGS ---------- */
+const TEAM=['Sudhish K','Srivathsan S','Vasanth S','Mithun S'];
+const SHOW_PLACEHOLDERS=true;   // false hides empty image slots
+const SHOW_VERIFY=true;         // false hides the yellow "To verify" strips
+const CASE_COLORS=true;         // false = one accent colour for all cases
+const GATE_FULLSCREEN=false;    // true = first click also enters fullscreen
+const FLAG_ALT=1.15;            // camera height during the flag step (higher = France smaller)
+/* globe sharpness / speed */
+const GEO_DETAIL=true;          // true = detailed region borders on the globe (falls back automatically)
+const WORLD_50M=false;          // true = sharper country borders, but a LARGE download (untested source)
+const BORDER_CASE=.04, BORDER_BASE=.02;   // region border thickness (degrees)
+const WORLD_FAR=.07, WORLD_NEAR=.022;     // country border thickness: whole Earth / zoomed on France
+const CASE_ALT=.004, BASE_ALT=.001, WORLD_ALT=.0012;
+const HI_RES=Math.min(devicePixelRatio||1,2);
+const FLIGHT_RES=HI_RES;        // set to 1.25 only if a laptop lags during camera flights
+const ACC='#8CB8FF', ATMO='#6aa7ff';
+const TEX='https://unpkg.com/three-globe/example/img/earth-night.jpg';
+
+/* ---------- DATA ---------- */
+const CASES=[
+{n:'01',name:'Chevaline',year:'2012',place:'Haute-Savoie',code:'84',lat:45.80,lng:6.21,alt:.14,col:'#5BC08A',
+ line:'Four people shot dead on a quiet forest road in the Alps.',
+ stats:[['Year','2012'],['Place','Combe d’Ire, Haute-Savoie'],['Obstacle','Weapon never found']],
+ facts:['On 5 September 2012, a British-Iraqi family and a local cyclist were shot near Chevaline.',
+  'Four died: Saad al-Hilli, his wife Iqbal, her mother Suhaila al-Allaf, and the cyclist Sylvain Mollier.',
+  'Two girls survived: Zainab (7), badly wounded, and Zeena (4), found hiding hours later.',
+  'About 25 rounds of 7.65 mm were fired. The weapon has never been recovered.'],
+ tl:[['5 Sept 2012','Shooting on the forest road near Combe d’Ire.'],['Hours later','The younger girl is found alive in the car.'],['2013','The victim’s brother is arrested in the UK, then released without charge.'],['Today','The weapon is still missing; the case remains open.']],
+ ob:{h:'The weapon was <em>never found</em>.',t:'Without the gun, investigators cannot tie any suspect to the shots, and no motive has been proven.',
+  th:['A family dispute','The cyclist was the real target','A lone gunman and a chance encounter']},
+ imgs:[{src:'images/chevaline-1.jpg',cap:'The forest road near Combe d’Ire',credit:'Source: Photo Magazine N°01'},{src:'images/chevaline-2.jpg',cap:'Add caption',credit:'Credit: to add'}],
+ src:'Photo Magazine N°01 · Wikipedia FR · BBC · Le Monde',
+ status:'Open investigation',obst:'Weapon never found'},
+{n:'02',name:'Godard',year:'1999',place:'Brittany coast',code:'53',lat:48.75,lng:-3.4,alt:.28,col:'#3FC1C9',
+ line:'A disappearance with no crime scene to examine.',
+ stats:[['Year','1999'],['Place','Brittany coast'],['Obstacle','No primary crime scene']],
+ facts:['The magazine dates this case to 1999, on the Brittany coast.',
+  'No primary crime scene was ever identified.',
+  'With no starting point, forensic work had nothing to anchor to.'],
+ tl:[['1999','Case opens (per the magazine).'],['After','No primary scene is established.'],['Today','Still unexplained.']],
+ ob:{h:'There is <em>no scene</em> to examine.',t:'Every investigation begins at a place. Here there never was one.',
+  th:['An accident at sea','A voluntary disappearance','A criminal act']},
+ imgs:[{src:'images/godard-1.jpg',cap:'Illustration of a ship (AI-generated in the magazine)',credit:'Illustration, not evidence'},{src:'images/godard-2.jpg',cap:'Add caption',credit:'Credit: to add'}],
+ src:'Photo Magazine N°01',
+ verify:'details come only from the magazine; add sourced facts.',
+ status:'To be documented',obst:'No primary crime scene'},
+{n:'03',name:'Ben Barka',year:'1965',place:'Paris',code:'11',lat:48.854,lng:2.333,alt:.06,col:'#E5566E',
+ line:'A Moroccan opposition leader vanished in broad daylight in Paris.',
+ stats:[['Year','1965'],['Place','Brasserie Lipp, Paris'],['Obstacle','Classified documents']],
+ facts:['Mehdi Ben Barka, born in Rabat in 1920, was a leading opponent of the Moroccan monarchy.',
+  'On 29 October 1965 he was stopped outside Brasserie Lipp, boulevard Saint-Germain, by French police officers.',
+  'He had been lured by a fake film project and was taken to a villa in Fontenay-le-Vicomte.',
+  'His body has never been found.'],
+ tl:[['1963','Sentenced to death in absentia in Morocco.'],['29 Oct 1965','Abducted in central Paris.'],['1966–67','Trial in Paris; several defendants judged in absentia.'],['2007','International arrest warrants against Moroccan officials.']],
+ ob:{h:'Key files remain <em>secret-défense</em>.',t:'Partial declassifications have been granted, but the documents that could settle who ordered what remain sealed.',
+  th:['A Moroccan state operation','Complicity of French police and services','The fate of the body: accounts differ']},
+ imgs:[{src:'images/benbarka-1.jpg',cap:'Mehdi Ben Barka',credit:'Check licence: magazine image has a restoration watermark'},{src:'images/benbarka-2.jpg',cap:'Brasserie Lipp, boulevard Saint-Germain',credit:'Credit: to add'}],
+ src:'Photo Magazine N°01 · Wikipedia FR · Le Monde · INA',
+ status:'Body never found',obst:'Classified secret-défense documents'},
+{n:'04',name:'A6',year:'1984',place:'Autoroute du Soleil',code:'27',lat:47.03,lng:4.84,alt:.38,col:'#F0B24A',
+ route:[[48.85,2.35],[48.40,2.70],[47.80,3.57],[47.49,3.91],[47.03,4.84],[46.78,4.85],[46.31,4.83],[45.99,4.72],[45.76,4.84]],
+ line:'Cases along France’s main road to the south, never connected at the time.',
+ stats:[['From','1984 (per magazine)'],['Place','A6, Paris – Lyon'],['Obstacle','Fragmented investigations']],
+ facts:['The A6, the Autoroute du Soleil, links Paris and Lyon over about 450 km.',
+  'The magazine dates the first case to 1984.',
+  'Early investigations were run separately, so nobody connected the files.',
+  'A cold-case unit in Nanterre, created in 2022, now has the matter under review.'],
+ tl:[['1984','First case (per the magazine).'],['1980s–2000s','Separate investigations, no shared file.'],['2022','The Nanterre unit is created.'],['Today','Examinations in progress.']],
+ ob:{h:'The files were <em>never joined</em>.',t:'Each investigation started alone. Links, if any, were never tested at the time.',
+  th:['Separate, unrelated cases','A common perpetrator (hypothesis only)']},
+ imgs:[{src:'images/a6-1.jpg',cap:'The A6 at night (magazine image)',credit:'Source: Photo Magazine N°01'},{src:'images/a6-2.jpg',cap:'Add caption',credit:'Credit: to add'}],
+ src:'Photo Magazine N°01',
+ verify:'dates and links between cases come only from the magazine; cross-check.',
+ status:'Under review (Nanterre)',obst:'Fragmented initial investigations'}
+];
+if(!CASE_COLORS)CASES.forEach(c=>c.col=ACC);
+
+/* ---------- HELPERS ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const ra=(h,a)=>{const n=parseInt(h.slice(1),16);return'rgba('+(n>>16)+','+((n>>8)&255)+','+(n&255)+','+a+')'};
+const EZ='cubic-bezier(.4,0,.2,1)';
+const START={lat:22,lng:10,altitude:2.5}, OV={lat:46.6,lng:2.5,altitude:.42};
+const OVERSEAS=['01','02','03','04','06'];
+const wrap=$('#globe-wrap'),track=$('#track'),intro=$('#intro'),dossier=$('#dossier'),summary=$('#summary'),idx=$('#idx'),ro=$('#ro b'),timerEl=$('#timer'),statesEl=$('#states'),flagEl=$('#flag'),flagCap=$('#flagcap');
+const caseByCode=c=>CASES.find(x=>x.code===c);
+let globe=null,world=[],regions=[],metro=[],metroHi=[],state='intro',p=0,hoverCode=null,cur=0,lastXY=[innerWidth/2,innerHeight/2],started=false,dataReady=false,inited=false,openT=0,pauseT=0,resT=0,PINS=[];
+let lit=new Set(),regionsUp=false,frB=false,near=false,seq=[],seqStart=0,flagBox={x:0,y:0},curRes=0;
+if(!SHOW_PLACEHOLDERS)document.body.classList.add('noph');
+const later=(fn,ms)=>seq.push(setTimeout(fn,ms));
+const cancelSeq=()=>{seq.forEach(clearTimeout);seq=[]};
+const lock=on=>document.documentElement.classList.toggle('locked',on);
+const gPause=()=>{if(globe&&globe.pauseAnimation)globe.pauseAnimation()};
+const gResume=()=>{if(globe&&globe.resumeAnimation)globe.resumeAnimation()};
+function setRes(r){if(globe&&r!==curRes){curRes=r;globe.renderer().setPixelRatio(r)}}
+function fly(t,ms){
+ if(!globe)return;clearTimeout(resT);setRes(FLIGHT_RES);
+ globe.pointOfView(t,ms);
+ resT=setTimeout(()=>setRes(HI_RES),(ms||0)+80);
+}
+
+/* ---------- DATA LOADING (starts immediately, behind the gate) ---------- */
+const RAW='https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/',JSD='https://cdn.jsdelivr.net/gh/gregoiredavid/france-geojson@master/';
+const REG_URLS=[RAW+'regions-version-simplifiee.geojson',JSD+'regions-version-simplifiee.geojson'];
+const REG_HI_URLS=[RAW+'regions.geojson',JSD+'regions.geojson'];
+const WORLD_URLS=[].concat(WORLD_50M?['https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson']:[],
+ ['https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson','https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson','https://unpkg.com/globe.gl/example/datasets/ne_110m_admin_0_countries.geojson']);
+async function fetchFirst(urls){let err;for(const u of urls){try{const r=await fetch(u);if(!r.ok)throw new Error(r.status);return await r.json()}catch(e){err=e}}throw err}
+const notOS=f=>!OVERSEAS.includes(f.properties.code);
+const regP=fetchFirst(REG_URLS).then(j=>{regions=j.features||[];metro=regions.filter(notOS)}).catch(e=>console.warn('Regions failed',e));
+const hiP=GEO_DETAIL?fetchFirst(REG_HI_URLS).then(j=>{metroHi=(j.features||[]).filter(notOS)}).catch(e=>console.warn('Detailed regions failed, using simplified',e)):Promise.resolve();
+const worldP=fetchFirst(WORLD_URLS).then(j=>{world=j.features||[]}).catch(e=>console.warn('World borders failed',e));
+const texP=new Promise(res=>{const im=new Image();im.crossOrigin='anonymous';im.onload=im.onerror=()=>res();im.src=TEX});
+Promise.all([regP,hiP,worldP,texP,document.fonts?document.fonts.ready:null]).then(()=>{dataReady=true});
+setTimeout(()=>{dataReady=true},15000);
+
+/* ---------- STATE ---------- */
+const LABELS={intro:'01 — Introduction',world:'02 — Earth',states:'03 — The regions',zoom:'03 — The regions',france:'04 — France',dossier:'05 — Case file',summary:'06 — Summary'};
+function setState(s){state=s;Object.keys(LABELS).forEach(k=>document.body.classList.toggle('st-'+k,k===s));ro.textContent=LABELS[s]}
+
+/* ---------- STAR FIELD ---------- */
+const bg=$('#bg'),bx=bg.getContext('2d');
+function sizeBg(){bg.width=innerWidth;bg.height=innerHeight;drawBg()}
+function drawBg(){
+ const w=bg.width,h=bg.height;bx.clearRect(0,0,w,h);
+ let s=7;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};
+ const n=Math.round(w*h/5200);
+ for(let i=0;i<n;i++){const x=rnd()*w,y=rnd()*h,r=rnd();bx.globalAlpha=.15+rnd()*.6;bx.fillStyle=r>.93?'#bcd4ff':'#ffffff';const z=r>.97?2:1;bx.fillRect(x,y,z,z)}
+ bx.globalAlpha=1;
+}
+
+/* ---------- GEOMETRY HELPERS ---------- */
+const eachRing=g=>g.type==='Polygon'?g.coordinates:g.type==='MultiPolygon'?g.coordinates.flat():[];
+const cenLng=f=>{let a=0,n=0;eachRing(f.geometry).forEach(r=>r.forEach(c=>{a+=c[0];n++}));return n?a/n:0};
+const S=30,K=S*Math.cos(46.5*Math.PI/180);
+const pt=(lng,lat)=>[((lng+5.6)*K).toFixed(1),((51.3-lat)*S).toFixed(1)];
+const ringD=r=>r.map((c,i)=>(i?'L':'M')+pt(c[0],c[1]).join(' ')).join('')+'Z';
+const geomD=g=>g.type==='Polygon'?g.coordinates.map(ringD).join(''):g.type==='MultiPolygon'?g.coordinates.map(po=>po.map(ringD).join('')).join(''):'';
+const regName=f=>f.properties.nom||f.properties.name||f.properties.code;
+const isFR=f=>{const q=f.properties||{};return q.ADMIN==='France'||q.NAME==='France'||q.name==='France'};
+
+/* ---------- GLOBE ---------- */
+function buildBorders(){
+ const out=[],P=(r,alt)=>r.map(c=>[c[1],c[0],alt]);
+ world.forEach(f=>{if(isFR(f))return;eachRing(f.geometry).forEach(r=>out.push({pts:P(r,WORLD_ALT),color:'rgba(214,226,250,.62)',fr:false,w:0}))});
+ metroHi.forEach(f=>{
+  const c=caseByCode(f.properties.code),alt=(c?CASE_ALT:BASE_ALT)+.0012;
+  eachRing(f.geometry).forEach(r=>out.push({pts:P(r,alt),color:c?c.col:'rgba(196,210,236,.9)',fr:true,w:c?BORDER_CASE:BORDER_BASE}));
+ });
+ const a6=caseByCode('27');
+ if(a6&&a6.route)out.push({pts:a6.route.map(q=>[q[0],q[1],CASE_ALT+.003]),color:'#d3b6ff',fr:true,w:.035});
+ return out;
+}
+function applyColor(){if(globe)globe.pathColor(d=>d.fr&&!frB?'rgba(0,0,0,0)':d.color)}
+function applyStroke(){if(globe)globe.pathStroke(d=>d.fr?d.w:(near?WORLD_NEAR:WORLD_FAR))}
+function paintCaps(){
+ if(!globe)return;
+ globe.polygonCapColor(d=>{const c=caseByCode(d.properties.code);if(!c||!lit.has(c.code))return'rgba(14,20,34,.93)';return ra(c.col,c.code===hoverCode?.95:.68)});
+}
+function paintAlt(){
+ if(!globe)return;
+ globe.polygonAltitude(d=>{if(!regionsUp)return .0004;return caseByCode(d.properties.code)?CASE_ALT:BASE_ALT});
+}
+function sharpenTexture(){
+ let n=0;const iv=setInterval(()=>{
+  const m=globe&&globe.globeMaterial();
+  if(m&&m.map){m.map.anisotropy=globe.renderer().capabilities.getMaxAnisotropy();m.map.needsUpdate=true;clearInterval(iv)}
+  else if(++n>60)clearInterval(iv);
+ },250);
+}
+function initGlobe(){
+ if(typeof Globe!=='function')throw new Error('globe.gl did not load');
+ if(!metroHi.length)metroHi=metro;
+ globe=Globe({animateIn:false,rendererConfig:{antialias:true,alpha:true,powerPreference:'high-performance'}})(wrap);
+ setRes(HI_RES);
+ globe.backgroundColor('rgba(0,0,0,0)').width(innerWidth).height(innerHeight)
+  .globeImageUrl(TEX)
+  .showAtmosphere(true).atmosphereColor(ATMO).atmosphereAltitude(.18);
+ sharpenTexture();
+ globe.polygonsData([]).polygonCapCurvatureResolution(3).polygonSideColor(()=>'rgba(0,0,0,0)').polygonStrokeColor(()=>null).polygonsTransitionDuration(200)
+  .polygonLabel(d=>{const c=caseByCode(d.properties.code);if(state!=='france'||!c||!lit.has(c.code))return'';
+   return'<div style="padding:6px 10px;background:#0a0e16;border:1px solid '+c.col+';border-radius:6px;font:13px Inter,system-ui,sans-serif;color:#fff"><b>'+(d.properties.nom||'')+'</b><br>Case '+c.n+' · '+c.name+'<br><span style="color:#8d99ae">Click to open</span></div>'})
+  .onPolygonHover(d=>{if(state!=='france')return;let c=d&&caseByCode(d.properties.code);if(c&&!lit.has(c.code))c=null;setHover(c?c.code:null);document.body.classList.toggle('hand',!!c)})
+  .onPolygonClick(d=>{if(state!=='france'||!d)return;const c=caseByCode(d.properties.code);if(c&&lit.has(c.code))openCase(CASES.indexOf(c))});
+ paintAlt();paintCaps();
+ /* sharp ribbon borders: countries + regions + A6 route */
+ globe.pathPoints('pts').pathPointLat(q=>q[0]).pathPointLng(q=>q[1]).pathPointAlt(q=>q[2]).pathResolution(2).pathTransitionDuration(0);
+ applyColor();applyStroke();
+ globe.pathsData(buildBorders());
+ PINS=CASES.map(c=>{const el=document.createElement('div');el.className='pin';el.style.color=c.col;el.innerHTML='<i></i><b>'+c.n+' '+c.name+'</b>';
+  el.onmouseenter=()=>setHover(c.code);el.onmouseleave=()=>setHover(null);el.onclick=()=>openCase(CASES.indexOf(c));return{lat:c.lat,lng:c.lng,el}});
+ globe.htmlElementsData([]).htmlLat('lat').htmlLng('lng').htmlAltitude(.012).htmlElement(d=>d.el);
+ globe.pointOfView(START,0);
+ const ct=globe.controls();ct.enableZoom=false;ct.enablePan=false;ct.enableRotate=false;ct.autoRotate=true;ct.autoRotateSpeed=.55;
+}
+function setHover(code){hoverCode=code;paintCaps();$$('#idx .row').forEach(r=>r.classList.toggle('on',r.dataset.code===code))}
+
+/* ---------- SCROLL: intro -> Earth ---------- */
+function applyP(){
+ const e=ease(clamp(p/.9));
+ wrap.style.transform='translate3d('+((1-e)*24)+'vw,0,0) scale('+(.8+.2*e)+')';
+ intro.style.opacity=1-clamp(p/.35);
+ intro.style.transform='translate3d(0,'+(-p*80)+'px,0)';
+ document.body.classList.toggle('faded',p>.3);
+}
+function onScroll(){
+ if(state!=='intro'&&state!=='world')return;
+ const max=track.offsetHeight-innerHeight;p=max>0?clamp(scrollY/max):0;applyP();
+ if(p>.985&&state==='intro')setState('world');else if(p<=.985&&state==='world')setState('intro');
+}
+addEventListener('scroll',onScroll,{passive:true});
+
+/* ---------- STEP: REGIONS OVERLAY ---------- */
+function buildStates(){
+ const smap=$('.smap',statesEl),list=$('.slist',statesEl);
+ if(!metro.length){smap.innerHTML='';list.innerHTML='';return}
+ const ord=[...metro].sort((a,b)=>cenLng(a)-cenLng(b));
+ smap.innerHTML='<svg viewBox="0 0 320 306">'+ord.map((f,i)=>'<path data-code="'+f.properties.code+'" style="animation-delay:'+(.4+i*.15)+'s" fill-rule="evenodd" d="'+geomD(f.geometry)+'"/>').join('')+'</svg>';
+ list.innerHTML=ord.map((f,i)=>'<li data-code="'+f.properties.code+'" style="animation-delay:'+(.5+i*.15)+'s"><b>'+String(i+1).padStart(2,'0')+'</b>'+regName(f)+'</li>').join('');
+}
+function hlRegion(code,on){
+ $$('.smap path',statesEl).forEach(x=>x.classList.toggle('hl',on&&x.dataset.code===code));
+ $$('.slist li',statesEl).forEach(x=>x.classList.toggle('hl',on&&x.dataset.code===code));
+}
+statesEl.addEventListener('mouseover',e=>{const t=e.target.closest('li,path');if(t&&t.dataset.code)hlRegion(t.dataset.code,true)});
+statesEl.addEventListener('mouseout',e=>{if(e.target.closest('li,path'))hlRegion('',false)});
+function closeStates(){statesEl.classList.remove('open');statesEl.setAttribute('aria-hidden','true')}
+function enterStates(){
+ if(!globe||state!=='world')return;
+ setState('states');lock(true);document.body.classList.remove('hand');
+ buildStates();statesEl.classList.add('open');statesEl.setAttribute('aria-hidden','false');
+ near=true;later(applyStroke,150);   /* thinner country borders, rebuilt while the overlay hides the globe */
+ later(gPause,1500);
+}
+function backToWorld(){
+ if(state!=='states')return;
+ cancelSeq();closeStates();gResume();near=false;applyStroke();globe.controls().autoRotate=true;setState('world');lock(false);
+}
+
+/* ---------- STEP: ZOOM, FLAG, REGIONS RISE ---------- */
+function zoomFrance(){
+ if(state!=='states'||!globe)return;
+ cancelSeq();setState('zoom');seqStart=performance.now();
+ closeStates();gResume();globe.controls().autoRotate=false;
+ fly({lat:OV.lat,lng:OV.lng,altitude:FLAG_ALT},1800);
+ later(showFlag,1900);
+ later(diveRegions,3500);
+}
+function showFlag(){
+ try{
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9,m0=1e9,m1=-1e9;
+  const ds=metroHi.map(f=>eachRing(f.geometry).map(r=>{
+   const st=Math.max(1,Math.ceil(r.length/260));let s='';
+   for(let i=0;i<r.length;i+=st){
+    const q=globe.getScreenCoords(r[i][1],r[i][0]);
+    x0=Math.min(x0,q.x);x1=Math.max(x1,q.x);y0=Math.min(y0,q.y);y1=Math.max(y1,q.y);
+    if(f.properties.code!=='94'){m0=Math.min(m0,q.x);m1=Math.max(m1,q.x)}
+    s+=(i?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1);
+   }
+   return s+'Z';
+  }).join(''));
+  if(!isFinite(x0)||!isFinite(m0))throw new Error('no outline');
+  const pad=6,bx0=x0-pad,by0=y0-pad,w=x1-x0+pad*2,h=y1-y0+pad*2;
+  flagBox={x:bx0,y:by0};
+  flagEl.style.cssText='left:'+bx0+'px;top:'+by0+'px;width:'+w+'px;height:'+h+'px';
+  const g=(o,c)=>'<stop offset="'+o+'" stop-color="'+c+'"/>';
+  flagEl.innerHTML='<svg width="'+w+'" height="'+h+'" viewBox="'+bx0+' '+by0+' '+w+' '+h+'"><defs><linearGradient id="fl" gradientUnits="userSpaceOnUse" x1="'+m0+'" y1="0" x2="'+m1+'" y2="0">'
+   +g(0,'#0055A4')+g(.3333,'#0055A4')+g(.3333,'#F4F4F4')+g(.6667,'#F4F4F4')+g(.6667,'#EF4135')+g(1,'#EF4135')
+   +'</linearGradient></defs>'+ds.map(d=>'<path d="'+d+'" fill="url(#fl)" stroke="url(#fl)" stroke-width="1.2" stroke-linejoin="round" fill-rule="evenodd"/>').join('')+'</svg>';
+  flagEl.classList.add('on');flagCap.classList.add('on');
+ }catch(err){console.warn('Flag step skipped',err);cancelSeq();diveRegions()}
+}
+function diveRegions(){
+ flagEl.style.transformOrigin=(innerWidth/2-flagBox.x)+'px '+(innerHeight/2-flagBox.y)+'px';
+ flagEl.classList.add('out');flagCap.classList.remove('on');
+ regionsUp=true;lit.clear();frB=true;applyColor();
+ globe.polygonsTransitionDuration(900).polygonsData(metroHi);paintAlt();paintCaps();
+ fly(OV,1900);
+ const t0=1250,gap=320;
+ CASES.forEach((c,k)=>later(()=>{lit.add(c.code);paintCaps()},t0+k*gap));
+ later(()=>globe.htmlElementsData(PINS),t0+CASES.length*gap);
+ later(()=>{flagEl.classList.remove('on','out');flagEl.innerHTML='';globe.polygonsTransitionDuration(200)},2600);
+ later(()=>{if(state==='zoom')setState('france')},t0+CASES.length*gap+300);
+}
+function trySkip(){if(state==='zoom'&&performance.now()-seqStart>1200)skipSeq()}
+function skipSeq(){
+ cancelSeq();flagEl.classList.remove('on','out');flagEl.innerHTML='';flagCap.classList.remove('on');
+ globe.polygonsTransitionDuration(200);showFranceDirect();
+}
+function showFranceDirect(){
+ cancelSeq();closeStates();gResume();
+ setState('france');lock(true);document.body.classList.remove('hand');
+ globe.controls().autoRotate=false;
+ near=true;frB=true;applyStroke();applyColor();
+ regionsUp=true;CASES.forEach(c=>lit.add(c.code));
+ globe.polygonsData(metroHi);paintAlt();paintCaps();fly(OV,0);globe.htmlElementsData(PINS);
+}
+function restart(){
+ if(state!=='france')return;
+ setState('world');lit.clear();regionsUp=false;frB=false;near=false;applyColor();applyStroke();
+ globe.polygonsData([]).htmlElementsData([]);setHover(null);
+ fly(START,2000);
+ later(()=>{if(state==='world'||state==='intro')globe.controls().autoRotate=true},2000);
+ lock(false);scrollTo({top:0,behavior:'smooth'});
+}
+function jumpTo(i){
+ if(!globe)return;
+ if(state==='intro'||state==='world'){
+  scrollTo(0,track.offsetHeight-innerHeight);p=1;applyP();showFranceDirect();
+ }
+ openCase(i);
+}
+
+/* ---------- WORLD CLICK ---------- */
+const overEarth=(x,y)=>Math.hypot(x-innerWidth/2,y-innerHeight/2)<innerHeight*.45;
+addEventListener('mousemove',e=>{if(state==='world')document.body.classList.toggle('hand',overEarth(e.clientX,e.clientY)&&!e.target.closest('button,a'))},{passive:true});
+addEventListener('click',e=>{
+ lastXY=[e.clientX,e.clientY];
+ if(state==='zoom'){trySkip();return}
+ if(state==='world'&&!e.target.closest('button,a,[data-a]')&&overEarth(e.clientX,e.clientY))enterStates();
+},true);
+
+/* ---------- OVERLAYS ---------- */
+const R=()=>Math.hypot(innerWidth,innerHeight);
+function wipeIn(el){const[x,y]=lastXY;el.classList.add('open');el.scrollTop=0;
+ el.animate([{clipPath:'circle(0px at '+x+'px '+y+'px)'},{clipPath:'circle('+R()+'px at '+x+'px '+y+'px)'}],{duration:900,easing:EZ})}
+function wipeOut(el,done){const[x,y]=lastXY;
+ const a=el.animate([{clipPath:'circle('+R()+'px at '+x+'px '+y+'px)'},{clipPath:'circle(0px at '+x+'px '+y+'px)'}],{duration:700,easing:EZ,fill:'forwards'});
+ a.onfinish=()=>{el.classList.remove('open');a.cancel();done&&done()}}
+
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{root:dossier,threshold:.1});
+const io2=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io2.unobserve(en.target)}}),{root:summary,threshold:.1});
+dossier.addEventListener('scroll',()=>{const b=$('.d-prog',dossier);if(b)b.style.transform='scaleX('+(dossier.scrollTop/Math.max(1,dossier.scrollHeight-dossier.clientHeight))+')'},{passive:true});
+
+function locator(c){
+ if(!metro.length)return'';
+ const paths=metro.map(f=>'<path class="'+(f.properties.code===c.code?'on':'')+'" fill-rule="evenodd" d="'+geomD(f.geometry)+'"/>').join('');
+ let ex='';
+ if(c.route)ex+='<polyline class="rt" points="'+c.route.map(r=>pt(r[1],r[0]).join(',')).join(' ')+'"/>';
+ const q=pt(c.lng,c.lat);ex+='<circle class="pn" cx="'+q[0]+'" cy="'+q[1]+'" r="4"/>';
+ return'<svg viewBox="0 0 320 306">'+paths+ex+'</svg>';
+}
+
+function dossierHTML(i){
+ const c=CASES[i],last=i===CASES.length-1,nx=CASES[i+1];
+ const li=a=>a.map(t=>'<li>'+t+'</li>').join('');
+ return `
+<div class="d-bar"><button class="d-back" data-a="close"><b>←</b><span>France map</span></button><span class="d-t">${c.name}</span>
+ <div class="d-nav"><button data-a="prev" ${i?'':'disabled'}>←</button><span>${c.n} / 04</span><button data-a="next" ${nx?'':'disabled'}>→</button></div><i class="d-prog"></i></div>
+<header class="d-hero">
+ <img class="d-bg" src="${c.imgs[0].src}" alt="" onerror="this.remove()">
+ <div class="d-num">${c.n}</div>
+ <div class="d-hero-in"><p class="lab">Case ${c.n} · ${c.place} · ${c.year}</p><h1>${c.name}</h1><p class="lede">${c.line}</p>
+  ${SHOW_VERIFY&&c.verify?'<p class="vf">To verify — '+c.verify+'</p>':''}</div>
+ <div class="d-loc">${locator(c)}</div>
+ <div class="d-stats">${c.stats.map(s=>'<div><span class="lab">'+s[0]+'</span><b>'+s[1]+'</b></div>').join('')}</div>
+</header>
+<section class="d-sec rv"><p class="lab">Key facts</p><ul class="facts">${li(c.facts)}</ul></section>
+<section class="d-sec rv"><p class="lab">Timeline</p><ol class="tl">${c.tl.map(t=>'<li><span>'+t[0]+'</span><p>'+t[1]+'</p></li>').join('')}</ol></section>
+<section class="d-sec rv"><p class="lab">The obstacle</p><div class="ob"><h2>${c.ob.h}</h2><p>${c.ob.t}</p><p class="lab">Main theories</p><ul class="th">${li(c.ob.th)}</ul></div></section>
+<section class="d-sec rv"><p class="lab">Images</p><div class="gal">${c.imgs.map(m=>'<figure><div class="fig"><img src="'+m.src+'" alt="'+m.cap+'" loading="lazy" onerror="this.parentNode.classList.add(\'missing\')"></div><figcaption>'+m.cap+'<em>'+m.credit+'</em></figcaption></figure>').join('')}</div></section>
+<p class="src">Sources: ${c.src}</p>
+<button class="nx" data-a="${last?'tosummary':'next'}"><span><span class="lab">${last?'Finish':'Next case'}</span><br><b>${last?'Summary':nx.n+' '+nx.name}</b></span><i>→</i></button>`;
+}
+function summaryHTML(){
+ return `
+<div class="d-bar"><button class="d-back" data-a="sclose"><b>←</b><span>France map</span></button><span class="d-t">Summary</span><span class="d-nav">06 / 06</span></div>
+<header class="s-hero"><p class="lab">Synthesis</p><h1>Four cases,<br><em>four obstacles.</em></h1></header>
+<section class="d-sec rv"><table class="mx"><thead><tr><th>Case</th><th>Year</th><th>Region</th><th>Main obstacle</th><th>Status</th></tr></thead><tbody>
+${CASES.map(c=>'<tr><td><small style="color:'+c.col+'">'+c.n+'</small>'+c.name+'</td><td>'+c.year+'</td><td>'+c.place+'</td><td>'+c.obst+'</td><td><span class="st" style="color:'+c.col+'">'+c.status+'</span></td></tr>').join('')}
+</tbody></table></section>
+<section class="d-sec two rv"><div><p class="lab">The Nanterre unit</p><p class="big">Created in 2022, it reviews France’s cold cases. According to our magazine, examinations are ongoing (“examens en cours”).</p></div>
+<div><p class="lab">Conclusion</p><p class="big">Each case is blocked by something different: a missing weapon, a missing scene, sealed files, scattered files. No single fix would open all four.</p></div></section>
+<section class="cred rv"><p class="lab">Group N° 9 · PBL Language &amp; Culture · SRM IST · 26LCA1003J · Slot A1</p><ul>${TEAM.map(n=>'<li>'+n+'</li>').join('')}</ul></section>`;
+}
+function reveal(root,obs){$$('.rv',root).forEach(el=>obs.observe(el))}
+
+function openCase(i){
+ if(!globe||(state!=='france'&&state!=='dossier'))return;
+ cur=i;const c=CASES[i];
+ setState('dossier');setHover(null);
+ fly({lat:c.lat,lng:c.lng,altitude:c.alt},1500);
+ dossier.style.setProperty('--co',c.col);
+ dossier.innerHTML=dossierHTML(i);reveal(dossier,io);
+ clearTimeout(openT);clearTimeout(pauseT);
+ openT=setTimeout(()=>{if(state==='dossier'){wipeIn(dossier);pauseT=setTimeout(gPause,1100)}},1100);
+}
+function go(d){
+ if(state!=='dossier'||!dossier.classList.contains('open'))return;
+ const i=cur+d;if(i<0||i>=CASES.length)return;
+ cur=i;const c=CASES[i];
+ dossier.style.setProperty('--co',c.col);
+ dossier.innerHTML=dossierHTML(i);dossier.scrollTop=0;reveal(dossier,io);
+ dossier.animate([{opacity:0},{opacity:1}],{duration:450,easing:EZ});
+ fly({lat:c.lat,lng:c.lng,altitude:c.alt},0);
+}
+function closeDossier(){
+ if(state!=='dossier')return;
+ clearTimeout(openT);clearTimeout(pauseT);gResume();
+ setState('france');fly(OV,1600);
+ if(dossier.classList.contains('open'))wipeOut(dossier);
+}
+function openSummary(){
+ if(!globe||(state!=='france'&&state!=='dossier'))return;
+ const fromD=state==='dossier';clearTimeout(openT);clearTimeout(pauseT);gResume();
+ setState('summary');fly(OV,1500);
+ summary.innerHTML=summaryHTML();reveal(summary,io2);wipeIn(summary);
+ pauseT=setTimeout(gPause,1900);
+ if(fromD)setTimeout(()=>dossier.classList.remove('open'),950);
+}
+function closeSummary(){if(state!=='summary')return;clearTimeout(pauseT);gResume();setState('france');wipeOut(summary)}
+function toggleFS(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})}
+
+/* ---------- UI WIRING ---------- */
+idx.innerHTML='<span class="lab">Select a case</span>'+CASES.map((c,i)=>'<button class="row" style="--cc:'+c.col+'" data-a="row" data-i="'+i+'" data-code="'+c.code+'"><b>'+c.n+'</b><span>'+c.name+'</span><em>'+c.year+'</em></button>').join('');
+idx.addEventListener('mouseover',e=>{const r=e.target.closest('.row');if(r&&state==='france')setHover(r.dataset.code)});
+idx.addEventListener('mouseout',e=>{if(e.target.closest('.row')&&state==='france')setHover(null)});
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a;
+ if(a==='enter')enterStates();
+ else if(a==='zoom')zoomFrance();
+ else if(a==='sback')backToWorld();
+ else if(a==='fs')toggleFS();
+ else if(a==='restart')restart();
+ else if(a==='summary'||a==='tosummary')openSummary();
+ else if(a==='close')closeDossier();
+ else if(a==='prev')go(-1);
+ else if(a==='next')go(1);
+ else if(a==='sclose')closeSummary();
+ else if(a==='jump')jumpTo(+t.dataset.i);
+ else if(a==='row')openCase(+t.dataset.i);
+});
+addEventListener('keydown',e=>{
+ const k=e.key;
+ if(!started){if(k==='Enter'||k===' '){e.preventDefault();startGate()}return}
+ if(k==='f'||k==='F'){toggleFS();return}
+ if(k==='t'||k==='T'){timerEl.classList.toggle('show');return}
+ lastXY=[innerWidth/2,innerHeight/2];
+ if(state==='states'){if(k==='Enter'||k===' '){e.preventDefault();zoomFrance()}else if(k==='Escape')backToWorld();return}
+ if(state==='zoom'){if(k==='Escape'||k==='Enter'||k===' '){e.preventDefault();trySkip()}return}
+ if(k==='Escape'){if(state==='summary')closeSummary();else if(state==='dossier')closeDossier();return}
+ if(state==='france'&&k>='1'&&k<='4')openCase(+k-1);
+ if(state==='dossier'){if(k==='ArrowRight')go(1);if(k==='ArrowLeft')go(-1)}
+});
+addEventListener('resize',()=>{if(globe)globe.width(innerWidth).height(innerHeight);sizeBg();applyP()});
+
+/* ---------- TIMER ---------- */
+let t0=0;
+function startTimer(){t0=Date.now();setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);timerEl.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');timerEl.classList.toggle('warn',s>=270)},500)}
+
+/* ---------- GATE -> LOADER ---------- */
+const gate=$('#gate'),loader=$('#loader'),lnum=$('.l-num'),lbar=$('.l-bar i');
+function startGate(){
+ if(started)return;started=true;
+ gate.classList.add('go');
+ if(GATE_FULLSCREEN&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});
+ setTimeout(()=>gate.remove(),1500);
+ runLoader();
+}
+gate.addEventListener('click',startGate);
+function runLoader(){
+ const t0=performance.now();let shown=0;
+ (function tick(now){
+  if(dataReady&&!inited){
+   inited=true;
+   try{initGlobe()}catch(err){console.error(err);$('.l-label').textContent='Could not load the 3D library. Check your internet connection and reload.';return}
+  }
+  let t=Math.min((now-t0)/2200,1)*100;if(!inited)t=Math.min(t,88);
+  shown+=(t-shown)*.14;
+  lnum.textContent=String(Math.round(shown)).padStart(3,'0');lbar.style.transform='scaleX('+shown/100+')';
+  if(inited&&shown>=99.4){finish();return}
+  requestAnimationFrame(tick);
+ })(t0);
+}
+function finish(){
+ lnum.textContent='100';lbar.style.transform='scaleX(1)';
+ setTimeout(()=>{
+  loader.classList.add('out');document.body.classList.add('ready');
+  setTimeout(()=>{loader.remove();document.documentElement.classList.remove('locked');startTimer();onScroll()},1000);
+ },250);
+}
+
+/* ---------- INIT ---------- */
+setState('intro');sizeBg();applyP();
+})();
+</script>
+</body>
+</html>
